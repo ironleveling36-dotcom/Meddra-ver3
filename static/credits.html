@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Credits - MedDRA Coding Assistant</title>
+<style>
+  :root {
+    --bg: #0e1117; --panel: #161b22; --panel2: #1c2230; --border: #2b3240;
+    --text: #e6edf3; --muted: #8b949e; --accent: #3b82f6; --accent2: #22c55e;
+  }
+  @media (prefers-color-scheme: light) {
+    :root {
+      --bg: #f6f8fa; --panel: #ffffff; --panel2: #f0f3f7; --border: #d0d7de;
+      --text: #1f2328; --muted: #656d76; --accent: #2563eb; --accent2: #16a34a;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: var(--bg); color: var(--text); line-height: 1.6; }
+  .wrap { max-width: 700px; margin: 0 auto; padding: 40px 20px; }
+  
+  h1 { font-size: 2rem; margin: 0 0 8px; background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .subtitle { color: var(--muted); font-size: 1rem; margin-bottom: 32px; }
+
+  .team-section { margin-bottom: 40px; }
+  .team-section h2 { font-size: 1.3rem; color: var(--accent); margin: 0 0 16px; }
+  
+  .team-member {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 10px;
+    padding: 16px; margin-bottom: 12px;
+  }
+  .name { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+  .role { font-size: .9rem; color: var(--accent); font-weight: 600; margin-top: 4px; }
+  .description { font-size: .9rem; color: var(--muted); margin-top: 8px; line-height: 1.5; }
+  .contact { font-size: .85rem; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); color: var(--muted); }
+
+  .tech-section { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--border); }
+  .tech-section h2 { font-size: 1.3rem; color: var(--accent); margin: 0 0 12px; }
+  .tech-list { color: var(--muted); font-size: .9rem; line-height: 1.8; }
+  .tech-list a { color: var(--accent); text-decoration: none; }
+  .tech-list a:hover { text-decoration: underline; }
+
+  footer { text-align: center; color: var(--muted); font-size: .8rem; margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); }
+  a { color: var(--accent); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>🩺 Credits</h1>
+  <p class="subtitle">Meet the team behind the MedDRA Coding Assistant</p>
+
+  <div class="team-section">
+    <h2>👨‍💻 Engineering & Pharmacovigilance</h2>
+    <div class="team-member">
+      <div class="name">Abishek</div>
+      <div class="role">Full-Stack Engineer & Pharmacovigilance Expert</div>
+      <div class="description">
+        Architecture design, backend development (FastAPI, Python), hybrid search engine (semantic + fuzzy),
+        AI integration, MedDRA coding standards, medical validation, and pharmacovigilance guidance.
+        Ensures accuracy, clinical meaning, and regulatory alignment.
+      </div>
+      <div class="contact">📧 <a href="mailto:abishek.ak.pv@gmail.com">abishek.ak.pv@gmail.com</a></div>
+    </div>
+  </div>
+
+  <div class="team-section">
+    <h2>⚕️ Medical & Pharmacovigilance Operations</h2>
+    <div class="team-member">
+      <div class="name">Diwahar</div>
+      <div class="role">Quality Operations Lead</div>
+      <div class="description">
+        Led Quality Operations, ensuring compliance, process excellence, quality oversight, 
+        and continuous operational improvement across all workflows. Regulatory adherence and 
+        quality assurance oversight.
+      </div>
+    </div>
+    <div class="team-member">
+      <div class="name">Vignesh</div>
+      <div class="role">Aggregate Analysis & Operations Manager</div>
+      <div class="description">
+        Managed Aggregate Analysis and Operations, overseeing aggregate report workflows, 
+        data evaluation, regulatory deliverables, and operational coordination across teams.
+      </div>
+    </div>
+    <div class="team-member">
+      <div class="name">Karthickeyan</div>
+      <div class="role">Aggregate Analysis & Operations Manager</div>
+      <div class="description">
+        Managed Aggregate Analysis and Operations, overseeing aggregate report workflows, 
+        data evaluation, regulatory deliverables, and operational coordination across teams.
+      </div>
+    </div>
+    <div class="team-member">
+      <div class="name">Aldorex</div>
+      <div class="role">Medical Information Operations Manager</div>
+      <div class="description">
+        Delivered Medical Information Operations, providing accurate, evidence-based medical 
+        information support, scientific response management, literature evaluation, and 
+        healthcare inquiry handling through company website channels.
+      </div>
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <h2>⚙️ Technology Stack</h2>
+    <div class="tech-list">
+      <strong>Backend:</strong> <a href="https://fastapi.tiangolo.com/">FastAPI</a>, Python, 
+      <a href="https://github.com/embedchain/fastembed">FastEmbed</a> (ONNX embeddings), 
+      <a href="https://github.com/maxbachmann/RapidFuzz">RapidFuzz</a> (fuzzy matching)<br>
+      <strong>AI Layer:</strong> OpenAI-compatible API (Kimi K2.6, DeepSeek) — Optional AI integration for medical inquiry support<br>
+      <strong>Data:</strong> MedDRA v29.0, IME List v29.0<br>
+      <strong>Frontend:</strong> Vanilla JavaScript, responsive HTML/CSS<br>
+      <strong>Deployment:</strong> <a href="https://render.com">Render</a>, Docker, GitHub<br>
+      <strong>Coding Standards:</strong> MedDRA Preferred Terms (PT), Lowest Level Terms (LLT), 
+      System Organ Classes (SOC), Important Medical Events (IME)
+    </div>
+  </div>
+
+  <div class="tech-section">
+    <h2>🤖 AI Integration Status</h2>
+    <div class="tech-list">
+      <strong>Hybrid Search:</strong> ✅ Active (semantic + fuzzy matching, instant results)<br>
+      <strong>AI Suggest Tab:</strong> ✅ Available (parallel AI re-ranking with analyzing animation)<br>
+      <strong>Medical Inquiry Support:</strong> ✅ Ready (AI-powered responses for healthcare inquiries)<br>
+      AI integration enhances accuracy through OpenAI-compatible LLM providers, providing clinical interpretation 
+      and re-ranking of MedDRA codes. Falls back to hybrid search gracefully if AI is unavailable.
+    </div>
+  </div>
+
+  <footer>
+    <p><a href="/">← Back to Coding Assistant</a></p>
+    <p>© 2026 MedDRA Coding Assistant. All rights reserved.</p>
+  </footer>
+</div>
+</body>
+</html>
