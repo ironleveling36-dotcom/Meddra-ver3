@@ -130,16 +130,21 @@ async def _search(text: str, top_k: int, ai: bool | None) -> CodeResponse:
         raise HTTPException(status_code=503, detail="Index is still loading or unavailable — please retry in a moment.")
 
     use_ai = settings.AI_ENABLED and (settings.AI_DEFAULT if ai is None else ai)
+    results = None
+    ai_info = AIInfo()
+    
     if use_ai:
         try:
             data = await ai_search(eng, text, top_k)
             results = data["results"]
+            ai_info = AIInfo(**data["ai"])
         except Exception as e:
             # AI layer must never block coding results — fall through to plain
             # hybrid search below on ANY failure (network, parsing, provider bug).
             logger.error(f"AI layer failed unexpectedly, falling back to hybrid search: {e}")
-            results = eng.search(text, top_k=top_k)
-    else:
+            use_ai = False
+
+    if not use_ai or results is None:
         results = eng.search(text, top_k=top_k)
 
     # Check IME status for each result
@@ -147,10 +152,7 @@ async def _search(text: str, top_k: int, ai: bool | None) -> CodeResponse:
     for r in results:
         r["is_ime"] = ime_idx.is_ime(r["term_id"], r.get("pt"))
 
-    if use_ai:
-        return CodeResponse(query=data["query"], count=data["count"],
-                            results=results, ai=AIInfo(**data["ai"]))
-    return CodeResponse(query=text, count=len(results), results=results)
+    return CodeResponse(query=text, count=len(results), results=results, ai=ai_info)
 
 
 @app.post("/api/code", response_model=CodeResponse)

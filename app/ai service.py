@@ -201,8 +201,16 @@ class AIService:
                 resp = await client.post(url, json=body, headers=_headers())
             if resp.status_code != 200:
                 logger.warning(f"AI API HTTP {resp.status_code}: {resp.text[:200]}")
+                _refine_cache[cache_key] = None
                 return None
-            data = resp.json()
+            
+            try:
+                data = resp.json()
+            except json.JSONDecodeError:
+                logger.error(f"AI API returned non-JSON (HTTP 200): {resp.text[:500]}")
+                _refine_cache[cache_key] = None
+                return None
+            
             text = _extract_text(data).strip()
             # Strip markdown code fences some providers add despite instructions.
             if text.startswith("```"):
@@ -210,11 +218,15 @@ class AIService:
                 if text.lower().startswith("json"):
                     text = text[4:].strip()
             if not text:
-                logger.warning(f"AI API returned empty content; raw response: {json.dumps(data)[:400]}")
+                logger.warning(f"AI API returned empty content; raw response: {resp.text[:500]}")
+                _refine_cache[cache_key] = None
                 return None
             try:
                 parsed = json.loads(text)
-            except json.JSONDecodeError:
+            except json.JSONDecodeError as je:
+                logger.error(f"AI response JSON parse failed: {je}; raw text: {text[:300]}")
+                _refine_cache[cache_key] = None
+                return None
                 # Salvage the JSON object if there's any surrounding text.
                 a, b = text.find("{"), text.rfind("}")
                 if a == -1 or b == -1:
