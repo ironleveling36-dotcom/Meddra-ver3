@@ -1,0 +1,19 @@
+# MedDRA Coding Assistant — runtime dependencies (lean, no PyTorch)
+fastapi
+uvicorn[standard]
+
+# Hybrid search
+fastembed            # ONNX sentence embeddings (semantic) — no torch
+rapidfuzz            # fuzzy / lexical matching
+numpy
+
+# IME (Important Medical Event) index — Excel parsing
+pandas
+openpyxl             # Excel reader backend for pandas
+
+# Web / config / bot
+httpx
+python-dotenv
+
+# ASGI->WSGI bridge, only needed for cPanel/Passenger hosting (harmless elsewhere)
+a2wsgi
