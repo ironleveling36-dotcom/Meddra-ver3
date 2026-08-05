@@ -1,0 +1,15 @@
+# MedDRA Coding Assistant — runtime dependencies (lean, no PyTorch)
+fastapi
+uvicorn[standard]
+
+# Hybrid search
+fastembed            # ONNX sentence embeddings (semantic) — no torch
+rapidfuzz            # fuzzy / lexical matching
+numpy
+
+# Web / config / bot
+httpx
+python-dotenv
+
+# ASGI->WSGI bridge, only needed for cPanel/Passenger hosting (harmless elsewhere)
+a2wsgi

@@ -1,0 +1,19 @@
+# Render.com blueprint — free, no Docker, no credit card.
+# Deploy: render.com → New → Blueprint → pick your GitHub repo.
+services:
+  - type: web
+    name: meddra-coder
+    runtime: python
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn app.main:app --host 0.0.0.0 --port $PORT"
+    healthCheckPath: /health
+    envVars:
+      # Required to enable the AI accuracy layer — set the real value in the
+      # Render dashboard (Environment tab), never commit it to git.
+      - key: AI_API_BASE_URL
+        value: https://api.hcnsec.cn/v1
+      - key: AI_API_KEY
+        sync: false
+      - key: AI_MODEL
+        value: auto

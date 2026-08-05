@@ -1,0 +1,3 @@
+# Extra deps needed ONLY to rebuild the index from MEDDRA.xlsx (scripts/build_index.py).
+# Not needed by the running web service.
+openpyxl

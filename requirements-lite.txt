@@ -1,0 +1,9 @@
+# LITE requirements for shared cPanel hosting (fuzzy/lexical only, no AI model).
+# Use with ENABLE_SEMANTIC=false. No fastembed / onnxruntime — installs easily
+# on shared hosting and uses ~100MB RAM instead of ~400MB.
+fastapi
+rapidfuzz
+numpy
+httpx
+python-dotenv
+a2wsgi          # ASGI->WSGI bridge for cPanel/Passenger
