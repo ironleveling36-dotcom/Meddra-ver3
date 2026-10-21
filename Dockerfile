@@ -5,6 +5,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends curl \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
+COPY app/ /app/app/
+COPY data/ /app/data/
+ENV MEDDRA_FILE=/app/data/meddra_terms.jsonl.gz
 
 # Install deps first for better layer caching.
 COPY requirements.txt .
