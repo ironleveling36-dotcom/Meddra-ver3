@@ -1,5 +1,4 @@
-"""
-MedDRA Coding Engine — hybrid fuzzy + semantic search.
+"""MedDRA Coding Engine — hybrid fuzzy + semantic search.
 
 Given free-text (a symptom, complaint, abbreviation, or misspelling), it returns
 the closest MedDRA LLT/PT terms ranked with a confidence score. Everything runs
@@ -25,8 +24,42 @@ from app.config import settings
 logger = logging.getLogger(__name__)
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-DATA_DIR = os.environ.get("MEDDRA_DATA_DIR", os.path.join(HERE, "..", "data"))
+PROJECT_DATA_DIR = os.path.abspath(os.path.join(HERE, "..", "data"))
+DATA_DIR = os.environ.get("MEDDRA_DATA_DIR", PROJECT_DATA_DIR)
 EMBED_MODEL = "BAAI/bge-small-en-v1.5"
+
+
+def _resolve_data_dir(configured_dir: str, require_vectors: bool = False) -> str:
+    """Find the MedDRA data directory in common deployment locations."""
+    candidates = [
+        configured_dir,
+        PROJECT_DATA_DIR,
+        os.path.join(HERE, "data"),
+        "/data",
+    ]
+    seen = set()
+    for candidate in candidates:
+        if not candidate:
+            continue
+        candidate = os.path.abspath(candidate)
+        if candidate in seen:
+            continue
+        seen.add(candidate)
+        terms_file = os.path.join(candidate, "meddra_terms.jsonl.gz")
+        vectors_file = os.path.join(candidate, "meddra_vectors.npz")
+        if os.path.isfile(terms_file) and (
+            not require_vectors or os.path.isfile(vectors_file)
+        ):
+            return candidate
+
+    checked = ", ".join(os.path.abspath(p) for p in candidates if p)
+    required = "meddra_terms.jsonl.gz"
+    if require_vectors:
+        required += " and meddra_vectors.npz"
+    raise FileNotFoundError(
+        f"MedDRA data file(s) not found ({required}). Checked directories: {checked}. "
+        "Deploy the required data files or set MEDDRA_DATA_DIR to their directory."
+    )
 
 
 class MeddraEngine:
@@ -44,9 +77,16 @@ class MeddraEngine:
 
     # ── Loading ─────────────────────────────────────────────────────
     def _load(self):
+        # Resolve at startup so a stale MEDDRA_DATA_DIR does not hide a valid
+        # project-local data folder. Semantic mode requires both files.
+        self.data_dir = _resolve_data_dir(
+            self.data_dir,
+            require_vectors=bool(settings.ENABLE_SEMANTIC),
+        )
         terms_path = os.path.join(self.data_dir, "meddra_terms.jsonl.gz")
         vec_path = os.path.join(self.data_dir, "meddra_vectors.npz")
 
+        logger.info("Using MedDRA data directory: %s", self.data_dir)
         logger.info(f"Loading MedDRA terms from {terms_path}")
         with gzip.open(terms_path, "rt", encoding="utf-8") as f:
             self.terms = [json.loads(line) for line in f]
